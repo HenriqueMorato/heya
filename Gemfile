@@ -19,6 +19,8 @@ group :development, :test do
   gem "yard", "~> 0.9.36"
 end
 
+gem "minitest", "~> 5.25", group: :test
+
 gem "minitest-ci", group: :test
 
 gem "simplecov", require: false, group: :test

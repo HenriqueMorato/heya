@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "minitest", "~> 5.25", group: :test
 gem "minitest-ci", group: :test
 gem "simplecov", require: false, group: :test
 gem "timecop", "~> 0.9.2"
