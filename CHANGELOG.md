@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Support Rails 8.0 (#286, @jbennett)
+- `halt` campaigns to remove users whose segment stops matching, instead of
+  skipping their messages. Set `halt true` in a campaign, or per user with
+  `Campaign.add(user, halt: true)`. Requires a migration -- see
+  [UPGRADING.md](./UPGRADING.md).
+
+### Changed
+- Like `segment`, `default`, and `user_type`, `halt` is now a reserved campaign
+  method name, so `step :halt` raises `Invalid step name`. Rename the step if
+  you have one.
+
+### Fixed
+- Correct the segmenting docs, which claimed users were removed from a campaign
+  when a campaign-level segment stopped matching. Their messages were only ever
+  skipped; `halt true` is what removes them.
 
 ## [0.12.0] - 2024-10-25
 ### Added
