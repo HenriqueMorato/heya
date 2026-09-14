@@ -624,7 +624,7 @@ can override it per user:
 ```ruby
 TrialCampaign.add(user)               # uses the campaign's `halt true`
 TrialCampaign.add(user, halt: false)  # skip messages for this user instead
-TrialCampaign.add(user, halt: true)   # halt this user on a campaign that doesn't
+TrialCampaign.add(user, halt: true)   # halt this user even when the campaign doesn't
 ```
 
 Like `concurrent`, `halt` is only applied when the membership is created--adding a
