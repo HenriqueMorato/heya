@@ -457,6 +457,24 @@ module Heya
         assert_equal campaign.steps[2].gid, membership.step_gid
       end
 
+      test "it skips steps that have receipts during a global run" do
+        campaign = create_test_campaign {
+          default wait: 0
+          user_type "Contact"
+          step :one
+          step :two
+          step :three, wait: 1.day
+        }
+        contact = contacts(:one)
+        CampaignReceipt.create!(user: contact, step_gid: campaign.steps.second.gid)
+
+        campaign.add(contact, send_now: false)
+        run_once
+
+        membership = CampaignMembership.where(user: contact, campaign_gid: campaign.gid).first
+        assert_equal campaign.steps.third.gid, membership.step_gid
+      end
+
       test "it removes the user when a halting campaign segment stops matching" do
         action = Minitest::Mock.new
         campaign = create_test_campaign {

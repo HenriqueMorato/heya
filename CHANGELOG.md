@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   you have one.
 
 ### Fixed
+- Skip steps the user has already received when advancing a membership during a
+  scheduled run. `Scheduler#run` passes no user, so the receipt lookup matched
+  nothing and a user who re-entered a campaign advanced through steps they had
+  already received, one run at a time.
 - Correct the segmenting docs, which claimed users were removed from a campaign
   when a campaign-level segment stopped matching. Their messages were only ever
   skipped; `halt true` is what removes them.
