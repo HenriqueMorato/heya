@@ -27,6 +27,10 @@ module Heya
       end
 
       def add(user, restart: false, concurrent: false, send_now: true, halt: nil)
+        unless halt.nil? || HALT_VALUES.include?(halt)
+          raise ArgumentError, "halt must be true or false, got #{halt.inspect}"
+        end
+
         return false unless Heya.in_segments?(user, *__segments)
 
         membership = CampaignMembership.where(user: user, campaign_gid: gid)
@@ -82,6 +86,8 @@ module Heya
       class_attribute :__user_type, default: nil
       class_attribute :__halt, default: false
 
+      HALT_VALUES = [true, false].freeze
+
       STEP_ATTRS = {
         action: Actions::Email,
         wait: 2.days,
@@ -116,7 +122,7 @@ module Heya
 
         def halt(value = nil)
           unless value.nil?
-            unless [true, false].include?(value)
+            unless HALT_VALUES.include?(value)
               raise ArgumentError, "halt must be true or false, got #{value.inspect}"
             end
             self.__halt = value

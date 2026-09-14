@@ -115,6 +115,21 @@ module Heya
         assert_match(/must be true or false/, error.message)
       end
 
+      test "#add raises when halt is given a non-boolean" do
+        campaign = create_test_campaign {
+          user_type "Contact"
+          step :one
+        }
+        contact = contacts(:one)
+
+        error = assert_raises(ArgumentError) do
+          campaign.add(contact, send_now: false, halt: :subscribed?)
+        end
+
+        assert_match(/must be true or false/, error.message)
+        refute CampaignMembership.where(user: contact, campaign_gid: campaign.gid).exists?
+      end
+
       test "#add stores the campaign's halt default on the membership" do
         campaign = create_test_campaign {
           user_type "Contact"
